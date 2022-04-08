@@ -48,11 +48,6 @@ class Server {
 
         this.app.use('/', transbankRoutes);
 
-        // this.app.get('*', (req,res) => {
-        //     res.sendFile( __dirname + '/public/index.html');
-        //     // res.sendFile('../public/index.html');
-        // });
-
 
     }
 
