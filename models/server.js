@@ -1,7 +1,7 @@
 const express = require('express');
-var cors = require('cors')
+const cors = require('cors')
 
-const transbankRoutes = require('../routes/transbank-routes')
+const transbankRoutes = require('../routes/transbank-routes');
 
 class Server {
 
@@ -19,8 +19,15 @@ class Server {
 
     middlewares(){
 
+     
+        // this.app.engine('hbs', hbs.express4({
+        //     layoutDir:'./views/layouts'
+        // }))
+        // this.app.set('views', './views/layouts');
+        // this.app('view engine', 'hbs');
+
         //Cors 
-        var whitelist = ['http://localhost:3000', 'http://example2.com']
+        var whitelist = ['https://www.musikastudio.online']
         var corsOptions = {
         origin: function (origin, callback) {
             if (whitelist.indexOf(origin) !== -1) {
@@ -38,6 +45,7 @@ class Server {
 
         // Lectura y parseo del Body
         this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: false }));
         
         //Directorio Publico
         this.app.use(express.static('public'))

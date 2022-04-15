@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagar con Web Pay</title>
+</head>
+<body>
+    <form id='webpayFormRequest' 
+    {{!-- action="https://webpay3gint.transbank.cl/webpayserver/initTransaction" --}}
+    action='{{urlRedirect}}'
+    method="get">
+        {{!-- <input type="hidden" name="token_ws" value='{{token}}'/> --}}
+        {{!-- <input type="hidden" name="token_ws" value='{{tbkToken}}'/> --}}
+        <input type="hidden" name="step" value='{{step}}'/>
+        <input type="hidden" name="amount" value='{{amount}}'/>
+        <input type="hidden" name="status" value='{{status}}'/>
+        <input type="hidden" name="buy_order" value='{{buy_order}}'/>
+        <input type="hidden" name="session_id" value='{{session_id}}'/>
+        <input type="hidden" name="card_number" value='{{accounting_date}}'/>
+        <input type="hidden" name="accounting_date" value='{{status}}'/>
+        <input type="hidden" name="transaction_date" value='{{transaction_date}}'/>
+        <input type="hidden" name="authorization_code" value='{{authorization_code}}'/>
+        <input type="hidden" name="payment_type_code" value='{{payment_type_code}}'/>
+        <input type="hidden" name="response_code" value='{{response_code}}'/>
+        <input type="hidden" name="installments_number" value='{{installments_number}}'/>
+        {{!-- <input type="submit" value="Pagar"/> --}}
+    </form>
+    <script>
+        window.onload = function() {
+            document.getElementById('webpayFormRequest').submit()
+        }
+    </script>
+</body>
+</html>

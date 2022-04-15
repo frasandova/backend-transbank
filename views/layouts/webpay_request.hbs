@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagar con Web Pay</title>
+</head>
+<body>
+    <form id='webpayFormRequest' 
+    {{!-- action="https://webpay3gint.transbank.cl/webpayserver/initTransaction" --}}
+    action='{{urlWebPay}}'
+    method="POST">
+        <input type="hidden" name="token_ws" value='{{token}}'/>
+        {{!-- <input type="submit" value="Pagar"/> --}}
+    </form>
+    <script>
+        window.onload = function() {
+            document.getElementById('webpayFormRequest').submit()
+        }
+    </script>
+</body>
+</html>
