@@ -61,6 +61,9 @@ exports.createTransaction= async (req, res) => {
     // let returnUrl =
     // req.protocol + "://" + "localhost:8081" + "/api/transbank/commit";
 
+    // let returnUrl =
+    // req.protocol + "://" + req.get("host") + "/api/transbank/commit";
+
     let returnUrl =
     req.protocol + "://" + req.get("host") + "/api/transbank/commit";
 
@@ -136,7 +139,8 @@ exports.commit = asyncHandler(async function (request, response, next) {
 
     response.render('webpay_response_success',{
         // urlRedirect: `http://localhost:3000/transbak-response?token=${tbkToken}&mesagge=${step}`,
-        urlRedirect: `http://localhost:3000/transbak-response`,
+        // urlRedirect: `http://localhost:3000/transbak-response`,
+        urlRedirect: `https://www.musikastudio.online/transbak-response`,
         step,        
         amount,
         status,
@@ -167,7 +171,8 @@ exports.commit = asyncHandler(async function (request, response, next) {
   }
 
   response.render('webpay_response_error',{
-    urlRedirect: `http://localhost:3000/transbak-response`,
+    // urlRedirect: `http://localhost:3000/transbak-response`,
+    urlRedirect: `https://www.musikastudio.online/transbak-response`,
     step,
     token,
     tbkToken,
