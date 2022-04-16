@@ -1,10 +1,26 @@
 require('dotenv').config();
 const hbs = require('express-hbs');
 var cookieParser = require("cookie-parser");
-
 const Server = require('./models/server');
 
+
+
 const server = new Server();
+
+
+// Inicializa en Cloud Functions
+// initializeApp();
+// const db = getFirestore();
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+//Inicializa en Google Cloud Platform
+// initializeApp({
+//   credential: applicationDefault()
+// });
+// const db = getFirestore();
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+
 
 
 server.app.use(cookieParser());

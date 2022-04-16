@@ -1,11 +1,38 @@
 const WebpayPlus = require("transbank-sdk").WebpayPlus;
 const asyncHandler = require("../utils/async_handler");
+const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
+const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+
+// const serviceAccount = require('./firebase/credentials/backend-musikastudio-f66ca6d09c6e.json');
+const serviceAccount = require('../firebase/credentials/backend-musikastudio-f66ca6d09c6e.json');
+initializeApp({
+  credential: cert(serviceAccount)
+});
+
+const db = getFirestore();
+
 // const Environment = require('transbank-sdk').Environment;
 
 // WebpayPlus.commerceCode = 597055555532;
 // WebpayPlus.apiKey = '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C';
 // WebpayPlus.environment = Environment.Integration;
 
+exports.saveDataFirestore = async (req,res) => {
+
+const docRef = db.collection('users').doc('alovelace');
+
+await docRef.set({
+  first: 'Ada',
+  last: 'Lovelace',
+  born: 1815
+});
+
+res.status(200).json({
+  ok:true,
+  message: 'usuarios guardados'
+})
+
+}
 
 exports.createTransaction= async (req, res) => {
     console.log('createTransaction Post');

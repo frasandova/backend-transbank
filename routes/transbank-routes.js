@@ -17,6 +17,9 @@ router.use(function (req, res, next) {
 // incorporar cors OK //OK
 // variables de produccion para transbank //OK
 
+router.get('/firestore',
+    transbankController.saveDataFirestore
+);
 router.post('/api/transbank/createTransaction',
     transbankController.createTransaction
 );
