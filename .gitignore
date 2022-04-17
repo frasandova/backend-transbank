@@ -1,2 +1,7 @@
 node_modules/
+
 firebase/
+
+.env
+
+backend-musikastudio-firebase-adminsdk-471go-082054d72e.json
