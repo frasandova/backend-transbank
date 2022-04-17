@@ -5,17 +5,33 @@ const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestor
 
 // const serviceAccount = require('./firebase/credentials/backend-musikastudio-f66ca6d09c6e.json');
 const serviceAccount = require('../firebase/credentials/backend-musikastudio-f66ca6d09c6e.json');
+const { json } = require("express");
+// initializeApp({
+//   credential: cert(serviceAccount)
+// });
+
 initializeApp({
-  credential: cert(serviceAccount)
+  credential: applicationDefault(),
+  // databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
 });
 
 const db = getFirestore();
+
+
+
 
 // const Environment = require('transbank-sdk').Environment;
 
 // WebpayPlus.commerceCode = 597055555532;
 // WebpayPlus.apiKey = '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C';
 // WebpayPlus.environment = Environment.Integration;
+
+exports.GetEnv = async (req, res) => {
+  return res.status(200).json({
+    ok:true,
+    ambiente: process.env.NODE_ENV
+  })
+}
 
 exports.saveDataFirestore = async (req,res) => {
 
