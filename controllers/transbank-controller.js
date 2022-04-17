@@ -4,7 +4,7 @@ const { initializeApp, applicationDefault, cert } = require('firebase-admin/app'
 const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
 
 // const serviceAccount = require('./firebase/credentials/backend-musikastudio-f66ca6d09c6e.json');
-const serviceAccount = require('../firebase/credentials/backend-musikastudio-f66ca6d09c6e.json');
+// const serviceAccount = require('../firebase/credentials/backend-musikastudio-f66ca6d09c6e.json');
 const { json } = require("express");
 // initializeApp({
 //   credential: cert(serviceAccount)
