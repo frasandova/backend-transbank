@@ -2,6 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const transbankController = require('../controllers/transbank-controller');
 const WebpayPlus = require("transbank-sdk").WebpayPlus;
+const { validateCreateTransaction } = require('../validators/transbank')
 
 router.use(function (req, res, next) {
   if (process.env.WPP_CC && process.env.WPP_KEY) {
@@ -26,6 +27,7 @@ router.get('/firestore',
 );
 
 router.post('/api/transbank/createTransaction',
+    [validateCreateTransaction],
     transbankController.createTransaction
 );
 
@@ -35,6 +37,14 @@ router.get('/api/transbank/commit',
 
 router.post('/api/transbank/commit',
     transbankController.commit
+);
+
+// router.get('api/transbank/getResultTransaction/:token',
+//   transbankController.getResultTransaction
+// );
+
+router.get('/api/transbank/getResultTransaction/:token',
+  transbankController.getResultTransaction
 );
 
 

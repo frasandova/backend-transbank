@@ -10,6 +10,10 @@ const { json } = require("express");
 //   credential: cert(serviceAccount)
 // });
 
+const urlBase= process.env.NODE_ENV === 'desa' 
+               ? 'http://localhost:3000'
+               : 'https://www.musikastudio.online'
+
 initializeApp({
   credential: applicationDefault(),
   // databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
@@ -54,13 +58,15 @@ exports.createTransaction= async (req, res) => {
     console.log('createTransaction Post');
     console.log('req.body', req.body)
     
-    let { monto = '' }  = req.body;
-    if(monto ===''){
-      res.status('200').json({
-        ok:false,
-        message: 'Campo Monto es Requerido' 
-      })
-    }
+    let { 
+      rut, nombre, apellido_paterno, apellido_materno, email, monto 
+    }  = req.body;
+    // if(monto ===''){
+    //   res.status('200').json({
+    //     ok:false,
+    //     message: 'Campo Monto es Requerido' 
+    //   })
+    // }
     let buyOrder = "O-" + Math.floor(Math.random() * 10000) + 1;
     let sessionId = "S-" + Math.floor(Math.random() * 10000) + 1;
     // let amount = Math.floor(Math.random() * 1000) + 1001;
@@ -90,9 +96,26 @@ exports.createTransaction= async (req, res) => {
       returnUrl
     );
   
-    let token = createResponse.token;
-    let url = createResponse.url;
+    let token = createResponse.token || null;
+    let url = createResponse.url  || null;
 
+    // console.log(token)
+    // console.log(url)
+    if(token && url){
+      console.log('entro')
+      // await db.collection('TRANSACCIONES').doc(`${token}_${rut}_${monto}`).set({
+        await db.collection('TRANSACCIONES').doc(token).set({
+        rut: rut,
+        nombre: nombre,
+        apellido_paterno: apellido_paterno,
+        apellido_materno:apellido_materno,
+        email: email,
+        monto: monto,
+        buyOrder,
+        sessionId,
+        returnUrl
+      })
+    }
       res.render('webpay_request',{
         urlWebPay:url,
         token:token
@@ -153,22 +176,32 @@ exports.commit = asyncHandler(async function (request, response, next) {
       "Transbank que hemos recibido la transacción ha sido recibida exitosamente. En caso de que " +
       "no se confirme la transacción, ésta será reversada.";
 
+      await db.collection('TRANSACCIONES')
+              .doc(token)
+              .update({
+                estadoTransaccion:'ok',
+                descripcion:step,
+                response_code,
+                respuestaTransaccion: {
+                  commitResponse
+                }
+              });
+
     response.render('webpay_response_success',{
-        // urlRedirect: `http://localhost:3000/transbak-response?token=${tbkToken}&mesagge=${step}`,
-        // urlRedirect: `http://localhost:3000/transbak-response`,
-        urlRedirect: `https://www.musikastudio.online/transbak-response`,
-        step,        
-        amount,
-        status,
-        buy_order,
-        session_id,
-        card_detail: card_detail.card_number,
-        accounting_date,
-        transaction_date,
-        authorization_code,
-        payment_type_code,
-        response_code,
-        installments_number
+        urlRedirect: `${urlBase}/transbank-response`,
+        token,
+        // step,        
+        // amount,
+        // status,
+        // buy_order,
+        // session_id,
+        // card_detail: card_detail.card_number,
+        // accounting_date,
+        // transaction_date,
+        // authorization_code,
+        // payment_type_code,
+        // response_code,
+        // installments_number
         
     })
     return;
@@ -186,9 +219,18 @@ exports.commit = asyncHandler(async function (request, response, next) {
     stepDescription = "En este paso luego de abandonar el formulario no es necesario realizar la confirmación ";
   }
 
+  console.log('TOKEN', tbkToken)
+  await db.collection('TRANSACCIONES')
+  .doc(tbkToken)
+  .update({
+    estadoTransaccion:'error',
+    descripcion:step,
+    response_code:400,
+    respuestaTransaccion: {}
+  });
+
   response.render('webpay_response_error',{
-    // urlRedirect: `http://localhost:3000/transbak-response`,
-    urlRedirect: `https://www.musikastudio.online/transbak-response`,
+    urlRedirect: `${urlBase}/transbank-response`,
     step,
     token,
     tbkToken,
@@ -202,6 +244,26 @@ exports.commit = asyncHandler(async function (request, response, next) {
 //     viewData,
 //   });
 });
+
+exports.getResultTransaction = async (req, res) => {
+  console.log('Entro getResultTransaction')
+  const { token ='' } = req.params
+
+const transaccionesRef = db.collection('TRANSACCIONES').doc(token);
+const doc = await transaccionesRef.get();
+if (!doc.exists) {
+  console.log('No such document!');
+  return res.status(200).json({
+    ok:false,
+    message:'No Existe el documento'
+  })
+} 
+
+  return res.status(200).json({
+    ok:true,
+    payload: doc.data()
+  })
+}
 
 
 
