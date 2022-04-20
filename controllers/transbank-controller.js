@@ -86,8 +86,10 @@ exports.createTransaction= async (req, res) => {
     // let returnUrl =
     // req.protocol + "://" + req.get("host") + "/api/transbank/commit";
 
-    let returnUrl =
-    req.protocol + "://" + req.get("host") + "/api/transbank/commit";
+    // let returnUrl =
+    // req.protocol + "://" + req.get("host") + "/api/transbank/commit";
+
+    let returnUrl = 'https://www.musikastudio.online/transbank-response';
 
     const createResponse = await (new WebpayPlus.Transaction()).create(
       buyOrder,
