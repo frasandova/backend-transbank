@@ -14,6 +14,10 @@ const urlBase= process.env.NODE_ENV === 'desa'
                ? 'http://localhost:3000'
                : 'https://www.musikastudio.online'
 
+const urlBaseBackend= process.env.NODE_ENV === 'desa' 
+               ? 'http://localhost:8081'
+               : 'https://backend-transbank.herokuapp.com'
+
 initializeApp({
   credential: applicationDefault(),
   // databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
@@ -72,9 +76,9 @@ exports.createTransaction= async (req, res) => {
     // let amount = Math.floor(Math.random() * 1000) + 1001;
     let amount = monto;
  
-    const host = process.env.ENVIROMENT === 'desa' 
-                 ? 'http://localhost:8081'
-                 : 'https://backend-transbank.herokuapp.com'
+    // const host = process.env.ENVIROMENT === 'desa' 
+    //              ? 'http://localhost:8081'
+    //              : 'https://backend-transbank.herokuapp.com'
 
 
     // let returnUrl =
@@ -89,7 +93,9 @@ exports.createTransaction= async (req, res) => {
     // let returnUrl =
     // req.protocol + "://" + req.get("host") + "/api/transbank/commit";
 
-    let returnUrl = 'https://www.musikastudio.online/transbank-response';
+    let returnUrl = `${urlBaseBackend}/api/transbank/commit`;
+
+    // let returnUrl = 'https://www.musikastudio.online/transbank-response';
 
     const createResponse = await (new WebpayPlus.Transaction()).create(
       buyOrder,
