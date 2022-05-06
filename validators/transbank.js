@@ -2,10 +2,9 @@ const { check } = require('express-validator') //TODO <---
 const { validarCampos } = require('../helpers/validateHelper')
 
 const validateCreateTransaction = [
-    check('rut', 'rut requerido')
-        // .exists()
-        .not()
-        .isEmpty(),
+    // check('rut', 'rut requerido')
+    //     .not()
+    //     .isEmpty(),
     check('nombre', 'nombre requerido')
         .not()
         .isEmpty()

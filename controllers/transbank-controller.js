@@ -63,14 +63,16 @@ exports.createTransaction= async (req, res) => {
     console.log('req.body', req.body)
     
     let { 
-      rut, nombre, apellido_paterno, apellido_materno, email, monto 
+      nombre, 
+      apellido_paterno, 
+      apellido_materno, 
+      email,
+      monto,
+      nombre_alumno = "", 
+      apellido_paterno_alumno = "", 
+      apellido_materno_alumno = "",
     }  = req.body;
-    // if(monto ===''){
-    //   res.status('200').json({
-    //     ok:false,
-    //     message: 'Campo Monto es Requerido' 
-    //   })
-    // }
+
     let buyOrder = "O-" + Math.floor(Math.random() * 10000) + 1;
     let sessionId = "S-" + Math.floor(Math.random() * 10000) + 1;
     // let amount = Math.floor(Math.random() * 1000) + 1001;
@@ -113,12 +115,14 @@ exports.createTransaction= async (req, res) => {
       console.log('entro')
       // await db.collection('TRANSACCIONES').doc(`${token}_${rut}_${monto}`).set({
         await db.collection('TRANSACCIONES').doc(token).set({
-        rut: rut,
         nombre: nombre,
         apellido_paterno: apellido_paterno,
         apellido_materno:apellido_materno,
         email: email,
         monto: monto,
+        nombre_alumno, 
+        apellido_paterno_alumno, 
+        apellido_materno_alumno,
         buyOrder,
         sessionId,
         returnUrl
