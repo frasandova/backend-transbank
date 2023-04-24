@@ -4,11 +4,11 @@ const { initializeApp, applicationDefault, cert } = require('firebase-admin/app'
 const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
 
 // const serviceAccount = require('./firebase/credentials/backend-musikastudio-f66ca6d09c6e.json');
-// const serviceAccount = require('../firebase/credentials/backend-musikastudio-f66ca6d09c6e.json');
+const serviceAccount = require('../credentials/backend-musikastudio-f66ca6d09c6e.json');
 const { json } = require("express");
-// initializeApp({
-//   credential: cert(serviceAccount)
-// });
+initializeApp({
+  credential: cert(serviceAccount)
+});
 
 const urlBase= process.env.NODE_ENV === 'desa' 
                ? 'http://localhost:3000'
@@ -18,10 +18,10 @@ const urlBaseBackend= process.env.NODE_ENV === 'desa'
                ? 'http://localhost:8081'
                : 'https://backend-transbank.herokuapp.com'
 
-initializeApp({
-  credential: applicationDefault(),
-  // databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
-});
+// initializeApp({
+//   credential: applicationDefault(),
+//   // databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
+// });
 
 const db = getFirestore();
 
